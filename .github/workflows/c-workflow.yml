@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: configure
+    - name: Minesweeper.c
       run: ./configure
     - name: make
       run: make
