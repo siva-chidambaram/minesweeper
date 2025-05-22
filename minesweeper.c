@@ -16,6 +16,7 @@ int count_mine(int** minefield, int row, int column, int size) {
         }
     }
     return count;
+    // OPTIMIZE: Add bounds checking to avoid accessing out-of-bounds memory.
 }
 
 // Generate a minefield with mines placed randomly
@@ -28,6 +29,7 @@ int** gen_mines(int size, int level) {
     for (i = 0; i < size; i++) {
         mine[i] = (int*)malloc(size * sizeof(int));
     }
+    // OPTIMIZE: Check for malloc failures and free memory on error.
 
     // Initialize minefield with 0
     for (i = 0; i < size; i++) {
@@ -52,6 +54,7 @@ int** gen_mines(int size, int level) {
             ref[rand_num] = 1;
         }
     }
+    // OPTIMIZE: Use Fisher-Yates shuffle for more efficient random placement.
 
     return mine;
 }
@@ -68,6 +71,7 @@ int** gen_minefield(int size, int level) {
         }
     }
     return minefield;
+    // OPTIMIZE: Combine mine placement and number calculation in a single pass.
 }
 
 // Draw top border of the grid
@@ -80,6 +84,7 @@ void top_border(int size) {
         if (i % 3 == 0) printf("%c", 194);
     }
     printf("%c%c\n", 196, 191);
+    // OPTIMIZE: Consider using a buffer to build the border string before printing.
 }
 
 // Draw middle border of the grid
@@ -91,6 +96,7 @@ void mid_border(int size) {
         if (i % 3 == 0) printf("%c", 197);
     }
     printf("%c%c", 196, 180);
+    // OPTIMIZE: Same as above, buffer for border.
 }
 
 // Draw bottom border of the grid
@@ -103,6 +109,7 @@ void bottom_border(int size) {
         if (i % 3 == 0) printf("%c", 193);
     }
     printf("%c%c", 196, 217);
+    // OPTIMIZE: Same as above, buffer for border.
 }
 
 // Display the current state of the minefield
@@ -132,6 +139,7 @@ void display_minefield(int x, int y, int size, int** minefield, int ref_matrix[s
         printf("\n");
     }
     bottom_border(size);
+    // OPTIMIZE: Reduce repeated code for cell display, use a function for cell rendering.
 }
 
 // Handle user input for movement and actions
@@ -162,6 +170,8 @@ void get_input(int size, int* x, int* y, char* choice, int** minefield, int ref_
             default: z: printf("\a\n"); break;
         }
     }
+    // OPTIMIZE: Refactor to avoid goto statements for better readability.
+    // OPTIMIZE: Consider using a struct for cell state instead of magic numbers.
 }
 
 // Show the full minefield after game over
@@ -189,11 +199,13 @@ void game_over(int size, int** minefield, int ref_matrix[size][size]) {
     }
     bottom_border(size);
     printf("\n\n\t\t\t\t\t\tGAME OVER\n\n");
+    // OPTIMIZE: Merge with display_minefield using a flag to show all mines.
 }
 
 // Open a single cell
 void open_cell(int* cell) {
     *cell = 0;
+    // OPTIMIZE: Inline this function, as it's only a single assignment.
 }
 
 // Recursively open adjacent cells if the cell has 0 mines around
@@ -210,6 +222,8 @@ void open(int x, int y, int size, int** minefield, int ref_matrix[size][size]) {
             }
         }
     }
+    // OPTIMIZE: Add bounds checking to avoid stack overflow on edges.
+    // OPTIMIZE: Use an explicit stack or queue to avoid deep recursion.
 }
 
 // Check if all non-mine cells are opened or flagged
@@ -221,6 +235,7 @@ int check_mines(int size, int ref_matrix[size][size], int mines) {
         }
     }
     return count == mines;
+    // OPTIMIZE: Track opened cells count during gameplay to avoid full scan.
 }
 
 // Main function
@@ -292,4 +307,5 @@ int main() {
         }
     }
     return 0;
+    // OPTIMIZE: Free all dynamically allocated memory before exiting.
 }
